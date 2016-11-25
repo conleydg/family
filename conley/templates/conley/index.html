@@ -1,0 +1,55 @@
+{# Load the tag library #}
+{% load static %}
+
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'conley/css/bootstrap.css' %}" />
+</head>
+<body>
+
+
+{% load embed_video_tags %}
+<h1>Non-Sibi</h1>
+
+
+{% for item in movies %}
+<div class="container">
+
+
+<div  class="panel panel-default">
+  <div class="panel-body">
+    <!-- {% video item.video 'small' %}
+    URL: {{ item.video.url }}
+    Thumbnail: {{ item.video.thumbnail }}
+    Backend: {{ item.video.backend }} -->
+ {{ item.id }}
+    {% video item.video as my_video %}
+        <!-- URL: {{ my_video.url }}
+        Thumbnail: {{ my_video.thumbnail }}
+        Backend: {{ my_video.backend }}
+        {% video my_video 'small' %} -->
+        <a href="/movie/{{item.id}}" >
+<img src="{{ my_video.thumbnail }}" alt="" height="240" width="320"/>
+</a>
+
+    {% endvideo %}
+
+
+
+</div>
+</div>
+</div>
+
+{% endfor %}
+
+
+<div class="panel panel-default">
+  test
+</div>
+
+
+
+    <button type="submit" class="btn btn-primary">
+      Submit
+    </button>
+</body>

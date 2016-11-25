@@ -1,3 +1,8 @@
 from django.contrib import admin
+from embed_video.admin import AdminVideoMixin
+from .models import Movie, Tag, People
 
-# Register your models here.
+class MovieAdmin(AdminVideoMixin, admin.ModelAdmin):
+    pass
+
+admin.site.register(Movie, MovieAdmin)
