@@ -9,6 +9,7 @@
 
 
 {% load embed_video_tags %}
+{% load rest_framework %}
 <h1>Non-Sibi</h1>
 
 
@@ -18,16 +19,11 @@
 
 <div  class="panel panel-default">
   <div class="panel-body">
-    <!-- {% video item.video 'small' %}
-    URL: {{ item.video.url }}
-    Thumbnail: {{ item.video.thumbnail }}
-    Backend: {{ item.video.backend }} -->
- {{ item.id }}
+
+ {{ item.title }}
+ <br>
     {% video item.video as my_video %}
-        <!-- URL: {{ my_video.url }}
-        Thumbnail: {{ my_video.thumbnail }}
-        Backend: {{ my_video.backend }}
-        {% video my_video 'small' %} -->
+
         <a href="/movie/{{item.id}}" >
 <img src="{{ my_video.thumbnail }}" alt="" height="240" width="320"/>
 </a>
@@ -39,17 +35,82 @@
 </div>
 </div>
 </div>
-
+<br><br>
 {% endfor %}
+<div class="container">
+<form method="post">
+  {% csrf_token %}
 
+<div>
+  URL:
+  <input type="text" name="url", id="id_url">
+</div>
+<div>
+  Date:
+  <input type="text" name="date" id="id_date">
+</div>
+<div>
+  Title:
+  <input type="text" name="title" id="id_title">
 
-<div class="panel panel-default">
-  test
+</div>
+<button id="submit" class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+
+</form>
 </div>
 
+{% block javascript %}
+  <script>
+  //For getting CSRF token
+function getCookie(name) {
+          var cookieValue = null;
+          if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+               var cookie = jQuery.trim(cookies[i]);
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) == (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+             }
+          }
+      }
+ return cookieValue;
+}
 
 
-    <button type="submit" class="btn btn-primary">
-      Submit
-    </button>
+//For doing AJAX post
+
+//When submit is clicked
+ $("#submit").click(function(e) {
+
+//Prevent default submit. Must for Ajax post.Beginner's pit.
+ e.preventDefault();
+
+
+ var video = $('#id_url').val();
+
+ var title = $('#id_title').val();
+
+//Prepare csrf token
+ var csrftoken = getCookie('csrftoken');
+    $("#id_url").change(function () {
+      console.log( $(this).val() );
+    });
+    $.ajax({
+      url:'/api/Movie/',
+      type: "POST",
+      data: {video: video, title: title, csrfmiddlewaretoken : csrftoken},
+      success:function(response){window.location.reload();},
+      complete:function(){},
+      error:function (xhr, textStatus, thrownError){}
+});
+});
+  </script>
+{% endblock %}
+
+
+
+</form>
 </body>
+<script src="{% static 'conley/js/main.js' %}"></script>

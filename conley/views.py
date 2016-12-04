@@ -1,8 +1,13 @@
 from django.shortcuts import render
+from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from django.http import HttpResponseRedirect, HttpResponse
 from rest_framework import viewsets
 from .models import Movie, Tag, People
 from .serializers import MovieSerializer, TagSerializer, PeopleSerializer
+from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.views import APIView
 
 
 class MovieViewSet(viewsets.ModelViewSet):

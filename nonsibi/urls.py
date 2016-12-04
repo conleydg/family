@@ -16,5 +16,5 @@ urlpatterns = [
     url(r'^$', views.index),
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^movie/([0-9])/$', views.movie_screen),
+    url(r'^movie/([0-9]+)/$', views.movie_screen),
 ]
