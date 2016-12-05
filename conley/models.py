@@ -7,6 +7,10 @@ class Movie(models.Model):
     movie_date = models.DateField(null=True)
     upload_date = models.DateTimeField(auto_now=True, null=True)
     title = models.CharField(max_length=255, null=True)
+    description = models.TextField(null=True)
+
+    def __str__(self):
+        return self.title
 
 class Tag(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)

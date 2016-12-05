@@ -5,8 +5,8 @@ class MovieSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Movie
-        fields = ('id', 'video', 'movie_date',
-                  'upload_date', 'title')
+        fields = ('url', 'id', 'video', 'movie_date',
+                  'upload_date', 'title', 'description')
 
 class TagSerializer(serializers.ModelSerializer):
 

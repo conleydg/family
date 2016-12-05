@@ -24,13 +24,13 @@ class PeopleViewSet(viewsets.ModelViewSet):
 
 
 
-
-
 def index(request):
     context = {'movies':Movie.objects.all()}
     return render(request, 'conley/index.html', context)
 
 def movie_screen(request, movie_id):
     movie = Movie.objects.get(id=movie_id)
-    context = {'movie':movie}
+    tags = Tag.objects.filter(movie=movie)
+    people = People.objects.filter(movie=movie)
+    context = {'movie':movie, 'tags':tags, 'people':people}
     return render(request, 'conley/movie_screen.html', context)
