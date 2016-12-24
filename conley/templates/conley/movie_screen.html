@@ -9,8 +9,8 @@
 
 
 {% load embed_video_tags %}
-<h1>Non-Sibi</h1>
-{{movie.title}}
+<a href="/"><h1>Non-Sibi</h1></a>
+{{movie.title}}: {{movie.description}}
 <br>
 {% video movie.video as my_video %}
 
@@ -18,11 +18,16 @@
 {% endvideo %}
 
 
+<br>
+
 {% for tag in tags%}
   {{ tag.tag }}
 {% endfor %}
 
+<br>
+
 {% for person in people%}
+<br>
   {{ person.person }}
 {% endfor %}
 
@@ -34,11 +39,19 @@
   {% csrf_token %}
 
 <div>
-  Who is in this video?
+  Add Person
   <input type="text" name="person", id="id_person">
-  <input type="hidden" id="id_movieObj" name="movieObj" value="{{ movie.url }}">
+  <input type="hidden" id="person_movieObj" name="movieObj" value="{{ movie.id }}">
+  <button id="submit" class="btn btn-sm btn-primary" type="submit">Add</button>
 </div>
-<button id="submit" class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+
+<div>
+  Add Keyword (Location)
+  <input type="text" name="person", id="id_tag">
+  <input type="hidden" id="tag_movieObj" name="movieObj" value="{{ movie.id }}">
+  <button id="submit_tag" class="btn btn-sm btn-primary" type="submit">Add</button>
+</div>
+
 
 </form>
 </div>
@@ -67,14 +80,11 @@ return cookieValue;
 
 //When submit is clicked
 $("#submit").click(function(e) {
-
 //Prevent default submit. Must for Ajax post.Beginner's pit.
 e.preventDefault();
-
-
 var person = $('#id_person').val();
-
-
+var movie = $('#person_movieObj').val();
+var url = '/api/Movie/' + movie + '/'
 
 //Prepare csrf token
 var csrftoken = getCookie('csrftoken');
@@ -84,11 +94,35 @@ var csrftoken = getCookie('csrftoken');
   $.ajax({
     url:'/api/People/',
     type: "POST",
-    data: {movie: "{{movie.url}}", person: person, csrfmiddlewaretoken : csrftoken},
+    data: {"movie": url, person: person, csrfmiddlewaretoken : csrftoken},
     success:function(response){window.location.reload();},
     complete:function(){},
     error:function (xhr, textStatus, thrownError){}
 });
 });
+
+$("#submit_tag").click(function(e) {
+//Prevent default submit. Must for Ajax post.Beginner's pit.
+e.preventDefault();
+var tag = $('#id_tag').val();
+var movie = $('#tag_movieObj').val();
+var url = '/api/Movie/' + movie + '/'
+console.log(movie)
+
+//Prepare csrf token
+var csrftoken = getCookie('csrftoken');
+  $("#id_tag").change(function () {
+    console.log( $(this).val() );
+  });
+  $.ajax({
+    url:'/api/Tag/',
+    type: "POST",
+    data: {"movie": url, tag: tag, csrfmiddlewaretoken : csrftoken},
+    success:function(response){window.location.reload();},
+    complete:function(){},
+    error:function (xhr, textStatus, thrownError){}
+});
+});
+
 
 </script>

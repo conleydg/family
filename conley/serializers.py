@@ -8,15 +8,15 @@ class MovieSerializer(serializers.ModelSerializer):
         fields = ('url', 'id', 'video', 'movie_date',
                   'upload_date', 'title', 'description')
 
-class TagSerializer(serializers.ModelSerializer):
+class TagSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Tag
-        fields = ('movie', 'tag')
+        fields = ('url', 'movie', 'tag')
 
 
 class PeopleSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = People
-        fields = ('movie', 'person')
+        fields = ('url', 'movie', 'person')
